@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  appointment-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+    networks:
+      - appointment-network
+
+  appointment-frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8081:80"
+    depends_on:
+      - appointment-api
+    networks:
+      - appointment-network
+
+networks:
+  appointment-network:
+    driver: bridge
